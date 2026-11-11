@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>កម្មវិធីគណនាតម្លៃទំនិញនាំចូល</title>
+    <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Kantumruy+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>កម្មវិធីគណនាថ្លៃដើម និងតម្លៃលក់ទំនិញនាំចូល</h1>
+            <p>គណនាថ្លៃដើមសរុប (Landed Cost) និងកំណត់រឹមប្រាក់ចំណេញសមស្របតាមទីផ្សារ</p>
+        </header>
+
+        <div class="main-grid">
+            <!-- ផ្នែកបញ្ចូលទិន្នន័យ -->
+            <section class="card input-section">
+                <h2>១. បញ្ចូលទិន្នន័យចំណាយ ($)</h2>
+
+                <div class="form-group">
+                    <label for="basePrice">តម្លៃទំនិញដំបូង (ក្នុង ១ ឯកតា / សរុប) *</label>
+                    <input type="number" id="basePrice" placeholder="ឧទាហរណ៍៖ 0.00" min="0" step="0.01" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="shippingCost">ថ្លៃដឹកជញ្ជូន (Shipping Cost) *</label>
+                    <input type="number" id="shippingCost" placeholder="ឧទាហរណ៍៖ 0.00" min="0" step="0.01" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="taxAndDocs">ពន្ធនាំចូល និងថ្លៃរត់ការឯកសារផ្សេងៗ <span class="badge">Optional</span></label>
+                    <input type="number" id="taxAndDocs" placeholder="ឧទាហរណ៍៖ 0.00" min="0" step="0.01" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="damageCost">ថ្លៃខូចខាត ឬបាត់បង់ (Damage / Loss)</label>
+                    <div class="input-row">
+                        <input type="number" id="damageCost" placeholder="0" min="0" step="0.01" value="0">
+                        <select id="damageType">
+                            <option value="percent">% នៃតម្លៃទំនិញដំបូង</option>
+                            <option value="fixed">$ (ចំនួនទឹកប្រាក់ថេរ)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="customMargin">កំណត់រឹមប្រាក់ចំណេញផ្ទាល់ខ្លួន (Profit Margin %)</label>
+                    <div class="range-container">
+                        <input type="range" id="marginSlider" min="10" max="80" value="0">
+                        <span id="marginDisplay">0%</span>
+                    </div>
+                    <small class="hint">ណែនាំ៖ ៣០% ទៅ ៦០% សម្រាប់ទំនិញនាំចូល</small>
+                </div>
+
+                <button id="resetBtn" class="btn-secondary">កំណត់ឡើងវិញ (Reset)</button>
+            </section>
+
+            <!-- ផ្នែកលទ្ធផល -->
+            <section class="card result-section">
+                <h2>២. លទ្ធផលគណនា</h2>
+
+                <div class="summary-box total-cost">
+                    <span>ថ្លៃដើមសរុបពិតប្រាកដ (Total Landed Cost)</span>
+                    <strong id="totalCost">$0.00</strong>
+                </div>
+
+                <div class="breakdown">
+                    <div class="breakdown-item">
+                        <span>តម្លៃទំនិញដំបូង៖</span>
+                        <span id="resBase">$0.00</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>ថ្លៃដឹកជញ្ជូន៖</span>
+                        <span id="resShipping">$0.00</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>ពន្ធ និងឯកសារ៖</span>
+                        <span id="resTax">$0.00</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>បម្រុងថ្លៃខូចខាត/បាត់បង់៖</span>
+                        <span id="resDamage">$0.00</span>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h3>តម្លៃលក់ចេញដែលណែនាំ (Recommended Selling Price)</h3>
+
+                <div class="price-cards">
+                    <div class="price-card min">
+                        <span class="tag">កម្រិតអប្បបរមា (30%)</span>
+                        <div class="price" id="price30">$0.00</div>
+                        <small>ចំណេញ៖ <span id="profit30">$0.00</span></small>
+                    </div>
+
+                    <div class="price-card custom">
+                        <span class="tag">តាមការកំណត់ (<span id="customTag">0%</span>)</span>
+                        <div class="price" id="priceCustom">$0.00</div>
+                        <small>ចំណេញ៖ <span id="profitCustom">$0.00</span></small>
+                    </div>
+
+                    <div class="price-card max">
+                        <span class="tag">កម្រិតខ្ពស់ (60%)</span>
+                        <div class="price" id="price60">$0.00</div>
+                        <small>ចំណេញ៖ <span id="profit60">$0.00</span></small>
+                    </div>
+                </div>
+
+                <div class="formula-note">
+                    * រូបមន្ត Profit Margin: <code>តម្លៃលក់ = ថ្លៃដើមសរុប ÷ (1 - %ប្រាក់ចំណេញ)</code>
+                </div>
+            </section>
+        </div>
+
+        <!-- ផ្នែកយុទ្ធសាស្ត្រអាជីវកម្ម -->
+        <section class="card tips-section">
+            <h2>៣. យុទ្ធសាស្ត្រគ្រប់គ្រងថ្លៃដើម និងទីផ្សារសម្រាប់ទំនិញនាំចូល</h2>
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <h3>📊 ការកំណត់រឹមប្រាក់ចំណេញ (30% - 60%)</h3>
+                    <p>អាស្រ័យលើប្រភេទមុខទំនិញ (ទំនិញប្រើប្រាស់ទូទៅ បច្ចេកវិទ្យា ឬសម្ភារៈតុបតែងផ្ទះ) ដើម្បីទូទាត់ជាមួយចំណាយប្រតិបត្តិការ និងទីផ្សារផ្សេងៗ។</p>
+                </div>
+                <div class="tip-item">
+                    <h3>🔍 ការសិក្សាទីផ្សារប្រកួតប្រជែង</h3>
+                    <p>មើលតម្លៃដៃគូប្រកួតប្រជែងក្នុងស្រុក មិនចាំបាច់លក់ថោកជាងគេជានិច្ចទេ តែត្រូវប្រកួតប្រជែងតាមរយៈ <strong>គុណភាព សេវាកម្មអតិថិជន ឬការធានា (Warranty)</strong>។</p>
+                </div>
+                <div class="tip-item">
+                    <h3>🏭 ស្វែងរក Supplier ផ្ទាល់ និងការចរចា</h3>
+                    <p>ទិញពីរោងចក្រផ្ទាល់ (1688, Taobao, Alibaba) និងចរចាបញ្ចុះតម្លៃ ឬសុំលក្ខខណ្ឌបង់ប្រាក់ល្អ (ឧ. កក់មុន ៣០% និងសង ៧០% ពេលទំនិញដល់)។</p>
+                </div>
+                <div class="tip-item">
+                    <h3>📦 គ្រប់គ្រងស្តុកតាមវិធីសាស្ត្រ JIT</h3>
+                    <p>កុំបណ្តោយឱ្យទំនិញដក់ស្តុក (Overstocking) ដែលនាំឱ្យកកស្ទះសាច់ប្រាក់ (Cash Flow) និងខាតថ្លៃរក្សាទុក។ ត្រូវបញ្ជាទិញជាដំណាក់កាលតាមតម្រូវការជាក់ស្តែង។</p>
+                </div>
+                <div class="tip-item">
+                    <h3>🏷️ ការបង្កើតអត្តសញ្ញាណយីហោ (Branding)</h3>
+                    <p>រចនាការវេចខ្ចប់ (Packaging) ឱ្យស្អាត និងមានស្លាកយីហោច្បាស់លាស់ ដើម្បីបង្កើនទំនុកចិត្ត និងលក់បានក្នុងតម្លៃខ្ពស់ជាងគូប្រជែង។</p>
+                </div>
+                <div class="tip-item">
+                    <h3>📱 លក់តាមប្រព័ន្ធអនឡាញ (Omnichannel)</h3>
+                    <p>ប្រើប្រាស់ Facebook, TikTok, Instagram និង Telegram ដើម្បីផ្សព្វផ្សាយ និងផលិតវីដេអូបង្ហាញពីលក្ខណៈពិសេស ឬគុណប្រយោជន៍របស់ទំនិញ។</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
